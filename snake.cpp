@@ -1,5 +1,7 @@
 #include "snake.h"
 
+#define mapsize 21
+
 void Snake::init()
 {
     size = 3;
@@ -11,24 +13,6 @@ void Snake::init()
 
     body[2][0] = 11;
     body[2][1] = 13;
-}
-
-void Snake::move(char direction)
-{
-    if(direction == 'w')
-        body[0][1]--;
-    else if (direction == 'a')
-        body[0][0]--;
-    else if (direction == 's')
-        body[0][1]++;
-    else if (direction == 'd')
-        body[0][0]++;
-    
-    for(int i = 1; i <size; i++)
-    {
-        body[i][0] = body[i-1][0];
-        body[i][1] = body[i-1][0];
-    }
 }
 
 int Snake::getSize()
@@ -45,3 +29,28 @@ int Snake::getBody_Y(int n)
 {
     return body[n][1];
 }
+
+bool Snake::SnakeIsDead()
+{
+    ㅑㄹ (body[0][0] == mapsize-1 || body[0][0] == 0 || body[0][1] == 0 || body[0][1] == mapsize -1)? true : false
+}
+
+void Snake::move(char direction)
+{
+    for(int i = size-1; i > 0; i--)
+    {
+        body[i][0] = body[i-1][0];
+        body[i][1] = body[i-1][1];
+    }
+    if(direction == 'a')
+        body[0][1]--;
+    else if (direction == 'w')
+        body[0][0]--;
+    else if (direction == 'd')
+        body[0][1]++;
+    else if (direction == 's')
+        body[0][0]++;
+    
+
+}
+

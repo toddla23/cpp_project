@@ -19,6 +19,8 @@ public:
     int getSize();
     int getBody_X(int n);
     int getBody_Y(int n);
+
+    bool SnakeIsDead();
 };
 
 #endif

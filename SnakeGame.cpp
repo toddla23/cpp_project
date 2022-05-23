@@ -14,6 +14,10 @@ int main()
 
     WINDOW * snake_win;
     initscr();
+    keypad(stdscr, TRUE);
+    curs_set(0);
+    noecho();
+
     resize_term(25,80);
     start_color();
 
@@ -22,18 +26,33 @@ int main()
     refresh();
 
     snake_win = newwin(mapsize,mapsize,2,2); 
-    for(int i = 0; i < mapsize; i++)
-        for(int j = 0; j < mapsize; j++)
-            mvwprintw(snake_win, i, j, "\u2B1C");
+    wborder(snake_win, '|', '|', '-', '-', '+', '+', '+', '+');
 
     for(int i = 0; i < s.getSize(); i++)
     {
-        mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), "\u2B1B");
+        mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), "0");
     }
-    wrefresh(snake_win); 
 
+    wrefresh(snake_win);
+
+    while(!s.SnakeIsDead())
+    {
+        
+        char ch = getch();
+        for(int i = 0; i < s.getSize(); i++)
+            mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), " ");
+
+        s.move(ch);
+
+        for(int i = 0; i < s.getSize(); i++)
+            mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), "0");
+
+        wrefresh(snake_win);
+
+    }
 
     getch();
+
     delwin(snake_win);
     endwin();
 
