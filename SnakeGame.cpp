@@ -1,60 +1,46 @@
-#include <ncursesw/curses.h>
-#include <locale.h>
-#include <iostream>
+#include "Growth.h"
 #include "snake.h"
 
-int main()
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+void Growth::init()
 {
-    Snake s;
-    s.init();
+    srand(time(NULL));
+    X = 1;
+    Y = 1;
+}
 
-    setlocale(LC_ALL, "");
+int Growth::getX()
+{
+    return X;
+}
 
-    int mapsize = 21;
+int Growth::getY()
+{
+    return Y;
+}
 
-    WINDOW * snake_win;
-    initscr();
-    keypad(stdscr, TRUE);
-    curs_set(0);
-    noecho();
+void Growth::set(Snake s)
+{
+    int n = 0;
 
-    resize_term(25,80);
-    start_color();
-
-    border('|', '|', '-', '-', '+', '+', '+', '+');
-    mvprintw(1, 15, "SNAKE GAME!");
-    refresh();
-
-    snake_win = newwin(mapsize,mapsize,2,2); 
-    wborder(snake_win, '|', '|', '-', '-', '+', '+', '+', '+');
-
-    for(int i = 0; i < s.getSize(); i++)
+    do
     {
-        mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), "0");
-    }
-
-    wrefresh(snake_win);
-
-    while(!s.SnakeIsDead())
-    {
-        
-        char ch = getch();
-        for(int i = 0; i < s.getSize(); i++)
-            mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), " ");
-
-        s.move(ch);
+        n = 0;
+        X = rand() % 21;
+        Y = rand() % 21;
 
         for(int i = 0; i < s.getSize(); i++)
-            mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), "0");
+        {
+            if(X == s.getBody_X(i) && Y == s.getBody_Y(i))
+            {
+                n++;
+                break;
+            }
+        }
 
-        wrefresh(snake_win);
+    }while(n != 0);
 
-    }
-
-    getch();
-
-    delwin(snake_win);
-    endwin();
-
-    return 0;
 }
