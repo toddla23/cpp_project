@@ -6,6 +6,7 @@
 
 #include "Snake.h"
 #include "Growth.h"
+#include "Poison.h"
 
 int main()
 {
@@ -14,6 +15,9 @@ int main()
 
     Growth G;
     G.init();
+
+    Poison P;
+    P.init();
 
     setlocale(LC_ALL, "");
 
@@ -49,7 +53,7 @@ int main()
     {
         
         char ch = getchar();
-        for(int i = 0; i < s.getSize(); i++)
+        for(int i = 0; i < s.getSize()+1; i++)
             mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), " ");
 
         s.move(ch);
@@ -63,10 +67,17 @@ int main()
             G.set(s);
             mvwprintw(snake_win, G.getX(), G.getY(), "G");
 
+
+            mvwprintw(snake_win, P.getX(), P.getY(), " ");
+            P.set(s);
+            mvwprintw(snake_win, P.getX(), P.getY(), "P");
+
             mv_cnt = 0;
         }
 
-        //s.iseatG(G);
+        s.iseatG(G);
+        s.iseatP(P);
+
         
         wrefresh(snake_win);
 
