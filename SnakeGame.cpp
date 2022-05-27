@@ -1,46 +1,82 @@
-#include "Growth.h"
-#include "snake.h"
-
+#include <ncursesw/curses.h>
+#include <locale.h>
 #include <iostream>
-#include <cstdlib>
 #include <ctime>
+#include <unistd.h>
 
-void Growth::init()
+#include "Snake.h"
+#include "Growth.h"
+
+int main()
 {
-    srand(time(NULL));
-    X = 1;
-    Y = 1;
-}
+    Snake s;
+    s.init();
 
-int Growth::getX()
-{
-    return X;
-}
+    Growth G;
+    G.init();
 
-int Growth::getY()
-{
-    return Y;
-}
+    setlocale(LC_ALL, "");
 
-void Growth::set(Snake s)
-{
-    int n = 0;
+    int mapsize = 21;
 
-    do
+    WINDOW * snake_win;
+    initscr();
+    keypad(stdscr, TRUE);
+    curs_set(0);
+    noecho();
+
+    resize_term(25,80);
+    start_color();
+
+    border('|', '|', '-', '-', '+', '+', '+', '+');
+    mvprintw(1, 15, "SNAKE GAME!");
+    refresh();
+
+    snake_win = newwin(mapsize,mapsize,2,2); 
+    wborder(snake_win, '|', '|', '-', '-', '+', '+', '+', '+');
+
+    for(int i = 0; i < s.getSize(); i++)
     {
-        n = 0;
-        X = rand() % 21;
-        Y = rand() % 21;
+        mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), "0");
+    }
+
+    wrefresh(snake_win);
+
+
+
+    int mv_cnt = 0;
+    while(!s.SnakeIsDead())
+    {
+        
+        char ch = getchar();
+        for(int i = 0; i < s.getSize(); i++)
+            mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), " ");
+
+        s.move(ch);
 
         for(int i = 0; i < s.getSize(); i++)
+            mvwprintw(snake_win, s.getBody_X(i), s.getBody_Y(i), "0");
+        if(mv_cnt == 10)
         {
-            if(X == s.getBody_X(i) && Y == s.getBody_Y(i))
-            {
-                n++;
-                break;
-            }
+
+            mvwprintw(snake_win, G.getX(), G.getY(), " ");
+            G.set(s);
+            mvwprintw(snake_win, G.getX(), G.getY(), "G");
+
+            mv_cnt = 0;
         }
 
-    }while(n != 0);
+        //s.iseatG(G);
+        
+        wrefresh(snake_win);
 
+        mv_cnt++;
+    }
+    delwin(snake_win);
+    
+    mvprintw(11,40,"Game Over!!");
+    getch();
+    endwin();
+
+    return 0;
 }
