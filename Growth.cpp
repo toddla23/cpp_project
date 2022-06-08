@@ -1,6 +1,6 @@
 #include "Growth.h"
 
-void Growth::init()
+Growth::Growth()
 {
     srand(time(NULL));
     X = 1;
@@ -24,8 +24,8 @@ void Growth::set(Snake s)
     do
     {
         n = 0;
-        X = rand() % 21;
-        Y = rand() % 21;
+        X = rand() % 19 + 1;
+        Y = rand() % 19 + 1;
 
         for(int i = 0; i < s.getSize(); i++)
         {

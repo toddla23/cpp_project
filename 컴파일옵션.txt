@@ -1,0 +1,1 @@
+g++ -std=c++11 -o game SnakeGame.cpp Snake.h Snake.cpp Growth.h Growth.cpp Poison.h Poison.cpp Wall.h Wall.cpp Gate.h Gate.cpp -lncursesw

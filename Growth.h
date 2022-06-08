@@ -18,7 +18,7 @@ private:
     int Y;
 
 public:
-    void init();
+    Growth();
     int getX();
     int getY();
     void set(Snake s);

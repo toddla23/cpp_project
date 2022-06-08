@@ -18,6 +18,7 @@ private:
     int Y;
 
 public:
+    Poison();
     void init();
     int getX();
     int getY();
